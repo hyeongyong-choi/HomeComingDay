@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MyPageUser from './MyPageUser';
 import MyPageCard from './MyPageCard';
-import { __getMyArticle } from '../../redux/modules/MyPageSlice';
+import { __getMyArticle, __getMyPage } from '../../redux/modules/MyPageSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import nonedatasquare from '../../assets/nonedatasquare.png';
 import Homeimg from '../../assets/Home.png';
 import Searchimg from '../../assets/Search.png';
 import Chatimg from '../../assets/Chat.png';
 import MyColorimg from '../../assets/MyColor.png';
+
 
 const MyPageHome = () => {
   const navigate = useNavigate();
@@ -20,28 +21,31 @@ const MyPageHome = () => {
   console.log(myarticles);
   // console.log(error);
 
-  // useEffect(() => {
-  //   dispatch(__getMyArticle());
-  // }, [dispatch]);
+
 
   //무한 스크롤
 
   const targetRef = useRef(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(-1);
   
   const checkIntersect = useCallback(([entry], observer) => {
-    if(entry.isIntersecting && !isLoaded){
+    if(entry.isIntersecting && !isLoaded ){
       console.log("page", page);
-      dispatch(__getMyArticle(page));
+      // dispatch(__getMyArticle(page));
       observer.unobserve(entry.target);
       setPage((prev) => prev + 1);
     }
   }, [dispatch, isLoaded, page])
 
   useEffect(() => {
+    if(myarticles.length < 25){
+    dispatch(__getMyArticle(page))};
+  }, [page]);
+
+  useEffect(() => {
     let observer;
-    console.log(Boolean(targetRef))
+    // console.log(Boolean(targetRef))
     if(targetRef){
       observer = new IntersectionObserver(checkIntersect, {
         threshold: 0.5,
@@ -177,7 +181,7 @@ const ArticleWrap = styled.div`
   border: 1px solid green;
   overflow-y: scroll;
   ::-webkit-scrollbar {
-    width: 0px;
+    width: 10px;
     /* background-color: red; */
   }
 `;
