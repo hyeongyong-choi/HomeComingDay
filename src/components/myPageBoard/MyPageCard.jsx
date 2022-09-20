@@ -11,9 +11,9 @@ const MyPageCard = ({ myarticle, id }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        dispatch(__getMyArticle())
-    }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(__getMyArticle())
+    // }, [dispatch])
 
     const onClickNavi = () => {
         if (myarticle.articleFlag === "도움요청") {
